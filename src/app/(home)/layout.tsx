@@ -1,4 +1,4 @@
-import Navbar from '@/components/Navbar';
+import Navbar from '@/components/Public/Navbar';
 import React from 'react';
 
 const PublicLayout = ({ children }: { children: React.ReactNode }) => {
