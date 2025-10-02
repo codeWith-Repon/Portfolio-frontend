@@ -24,6 +24,9 @@ import mongoose from "./assets/About/Mongoose.webp"
 import right_arrow_bold from './assets/right-arrow-bold.png'
 import send_icon from './assets/send-icon.png'
 import mail_icon from "./assets/mail_icon.png"
+import blog_icon from "./assets/Admin/blog.png"
+import project_icon from "./assets/Admin/project.png"
+import dashboard from "./assets/Admin/dashboard.png"
 
 export const assets = {
     logo,
@@ -54,5 +57,9 @@ export const assets = {
 
     right_arrow_bold,
     send_icon,
-    mail_icon
+    mail_icon,
+
+    blog_icon,
+    project_icon,
+    dashboard,
 }
