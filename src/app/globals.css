@@ -1,14 +1,23 @@
 @import 'tailwindcss';
 
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  --color-darkHover: #2a004a;
+  --color-lightHover: #fcf4ff;
+  --color-darkTheme: #11001f;
 
   --font-poppins: 'Poppins', sans-serif;
   --font-roboto: 'Roboto', sans-serif;
+  --font-Ovo: 'Ovo, serif';
 }
 
 body {
+  font-family: var(--font-poppins);
+}
+
+.font-ovo {
+  font-family: var(--font-ovo);
+}
+.font-poppins {
   font-family: var(--font-poppins);
 }
 
@@ -20,7 +29,7 @@ h3 {
 
 .light-text {
   font-family: var(--font-poppins);
-  font-weight: 200; 
+  font-weight: 200;
 }
 
 .bold-text {
