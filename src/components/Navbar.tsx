@@ -90,7 +90,7 @@ const Navbar = () => {
           </button>
 
           <Link
-            href='#contact'
+            href='/contact'
             className='hidden md:flex items-center gap-3 px-10 py-2.5 border border-gray-500 rounded-full ml-4 font-roboto'
           >
             Contact{' '}
