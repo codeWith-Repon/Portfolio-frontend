@@ -94,8 +94,14 @@ const Navbar = () => {
 
         {/* Mobile menu */}
 
+        {isOpen && (
+          <div
+            className='fixed inset-0 bg-black/50 z-40 min-h-screen'
+            onClick={() => setIsOpen(false)}
+          />
+        )}
+
         <ul
-          // ref={sideMenuRef}
           className={`flex md:hidden flex-col gap-4 py-20 px-10 fixed -right-64 top-0 bottom-0 w-64 z-50 h-screen bg-rose-50 dark:bg-darkHover shadow-lg transition-all duration-500 ${
             isOpen ? 'right-0 translate-x-0' : '-right-64 translate-x-full'
           }`}
@@ -112,7 +118,11 @@ const Navbar = () => {
           </div>
           {links.map(({ href, label }) => (
             <li key={label}>
-              <Link className='font-ovo' href={href}>
+              <Link
+                className='font-ovo'
+                href={href}
+                onClick={() => setIsOpen(false)}
+              >
                 {label}
               </Link>
             </li>
