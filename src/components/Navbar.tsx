@@ -8,7 +8,7 @@ import React, { useEffect } from 'react';
 const links = [
   { href: '/', label: 'Home' },
   { href: '#about', label: 'About' },
-  { href: '#projects', label: 'Projects' },
+  { href: '/projects', label: 'Projects' },
   { href: '/blogs', label: 'Blogs' },
   { href: '#contact', label: 'Contact' },
 ];
@@ -72,13 +72,13 @@ const Navbar = () => {
           ))}
         </ul>
         <div className='flex items-center gap-4'>
-          <button className='cursor-pointer'>
+          <button className='cursor-pointer hidden'>
             <Image src={assets.moon_icon} alt='mode toggle' className='w-6' />
           </button>
 
           <Link
             href='#contact'
-            className='hidden lg:flex items-center gap-3 px-10 py-2.5 border border-gray-500 rounded-full ml-4 font-roboto'
+            className='hidden md:flex items-center gap-3 px-10 py-2.5 border border-gray-500 rounded-full ml-4 font-roboto'
           >
             Contact{' '}
             <Image src={assets.arrow_icon} alt='arrow' className='w-3' />
