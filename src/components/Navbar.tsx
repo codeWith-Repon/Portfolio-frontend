@@ -3,19 +3,22 @@
 import { assets } from '../../public/assets';
 import Image from 'next/image';
 import Link from 'next/link';
+import { usePathname } from 'next/navigation';
 import React, { useEffect } from 'react';
 
 const links = [
   { href: '/', label: 'Home' },
-  { href: '#about', label: 'About' },
+  { href: '/about', label: 'About' },
   { href: '/projects', label: 'Projects' },
   { href: '/blogs', label: 'Blogs' },
-  { href: '#contact', label: 'Contact' },
+  { href: '/contact', label: 'Contact' },
 ];
 
 const Navbar = () => {
   const [isScroll, setIsScroll] = React.useState(false);
   const [isOpen, setIsOpen] = React.useState(false);
+
+  const pathname = usePathname();
 
   useEffect(() => {
     const handleScroll = () => {
@@ -63,13 +66,23 @@ const Navbar = () => {
               : 'bg-white/50 shadow-sm dark:border dark:border-white/50 dark:bg-transparent'
           }`}
         >
-          {links.map(({ href, label }) => (
-            <li key={label}>
-              <a className='font-ovo' href={href}>
-                {label}
-              </a>
-            </li>
-          ))}
+          {links.map(({ href, label }) => {
+            const isActive = pathname === href;
+            return (
+              <li key={label}>
+                <Link
+                  className={`font-ovo transition ${
+                    isActive
+                      ? ' text-rose-500 font-bold'
+                      : 'text-gray-700 hover:text-red-400'
+                  }`}
+                  href={href}
+                >
+                  {label}
+                </Link>
+              </li>
+            );
+          })}
         </ul>
         <div className='flex items-center gap-4'>
           <button className='cursor-pointer hidden'>
@@ -116,17 +129,24 @@ const Navbar = () => {
               className='w-5 cursor-pointer'
             />
           </div>
-          {links.map(({ href, label }) => (
-            <li key={label}>
-              <Link
-                className='font-ovo'
-                href={href}
-                onClick={() => setIsOpen(false)}
-              >
-                {label}
-              </Link>
-            </li>
-          ))}
+          {links.map(({ href, label }) => {
+            const isActive = pathname === href;
+            return (
+              <li key={label}>
+                <Link
+                  className={`font-ovo transition ${
+                    isActive
+                      ? ' text-rose-500 font-bold'
+                      : 'text-gray-700 hover:text-red-400'
+                  }`}
+                  href={href}
+                  onClick={() => setIsOpen(false)}
+                >
+                  {label}
+                </Link>
+              </li>
+            );
+          })}
         </ul>
       </nav>
     </>
