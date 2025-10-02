@@ -1,26 +1,46 @@
-@import "tailwindcss";
+@import 'tailwindcss';
 
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
-}
+  --color-darkHover: #2a004a;
+  --color-lightHover: #fcf4ff;
+  --color-darkTheme: #11001f;
 
-@theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
-}
+  --font-poppins: 'Poppins', sans-serif;
+  --font-roboto: 'Roboto', sans-serif;
+  --font-Ovo: 'Ovo, serif';
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+  --grid-auto: repeat(auto-fit, minmax(250px, 1fr));
 }
 
 body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  font-family: var(--font-poppins);
+}
+
+.font-ovo {
+  font-family: var(--font-ovo);
+}
+.font-poppins {
+  font-family: var(--font-poppins);
+}
+
+h1,
+h2,
+h3 {
+  font-family: var(--font-roboto);
+}
+
+.light-text {
+  font-family: var(--font-poppins);
+  font-weight: 200;
+}
+
+.bold-text {
+  font-family: var(--font-poppins);
+  font-weight: 600;
+}
+
+@layer utilities {
+  .grid-cols-auto {
+    grid-template-columns: var(--grid-auto);
+  }
 }
