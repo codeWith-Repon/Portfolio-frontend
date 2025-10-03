@@ -7,7 +7,7 @@ interface ToggleButtonProps {
     pressed: boolean;
 }
 const ToggleButton = ({ icon, pressed, onPressedChange }: ToggleButtonProps) => {
-    console.log(pressed)
+    
   return (
     <button
       type='button'
