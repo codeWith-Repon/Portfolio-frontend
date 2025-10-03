@@ -1,5 +1,6 @@
 'use client';
 
+import MenuBar from '@/components/rich-text-editor/menu-bar';
 import { useEditor, EditorContent } from '@tiptap/react';
 import StarterKit from '@tiptap/starter-kit';
 
@@ -15,7 +16,12 @@ const RichTextEditor = () => {
     },
   });
 
-  return <EditorContent editor={editor} />;
+  return (
+    <div>
+      <MenuBar editor={editor} />
+      <EditorContent editor={editor} />
+    </div>
+  );
 };
 
 export default RichTextEditor;
