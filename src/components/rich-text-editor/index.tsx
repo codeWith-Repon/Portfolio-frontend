@@ -2,8 +2,10 @@
 
 import MenuBar from '@/components/rich-text-editor/menu-bar';
 import Highlight from '@tiptap/extension-highlight';
+import Placeholder from '@tiptap/extension-placeholder';
 import TextAlign from '@tiptap/extension-text-align';
 import { useEditor, EditorContent } from '@tiptap/react';
+import Image from '@tiptap/extension-image';
 import StarterKit from '@tiptap/starter-kit';
 
 interface RichTextEditorProps {
@@ -25,6 +27,13 @@ const RichTextEditor = ({ content, onChange }: RichTextEditorProps) => {
             class: 'list-decimal ml-3',
           },
         },
+      }),
+      Image.configure({
+        inline: false,
+        allowBase64: true,
+      }),
+      Placeholder.configure({
+        placeholder: 'write something...',
       }),
       TextAlign.configure({
         types: ['heading', 'paragraph'],

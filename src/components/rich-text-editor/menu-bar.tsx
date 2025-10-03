@@ -7,6 +7,7 @@ import {
   Heading2,
   Heading3,
   Highlighter,
+  ImageIcon,
   Italic,
   List,
   ListOrdered,
@@ -17,7 +18,6 @@ import ToggleButton from './ToggleButton';
 import { Editor } from '@tiptap/react';
 
 const MenuBar = ({ editor }: { editor: Editor | null }) => {
-  
   if (!editor) {
     return null;
   }
@@ -82,6 +82,16 @@ const MenuBar = ({ editor }: { editor: Editor | null }) => {
       icon: <Highlighter className='size-4' />,
       onClick: () => editor.chain().focus().toggleHighlight().run(),
       pressed: editor.isActive('highlight'),
+    },
+    {
+      icon: <ImageIcon className='size-4' />,
+      onClick: () => {
+        const url = window.prompt('Enter image URL');
+        if (url) {
+          editor.chain().focus().setImage({ src: url }).run();
+        }
+      },
+      pressed: false,
     },
   ];
 
