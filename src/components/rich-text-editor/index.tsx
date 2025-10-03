@@ -1,12 +1,18 @@
 'use client';
 
 import MenuBar from '@/components/rich-text-editor/menu-bar';
+import TextAlign from '@tiptap/extension-text-align';
 import { useEditor, EditorContent } from '@tiptap/react';
 import StarterKit from '@tiptap/starter-kit';
 
 const RichTextEditor = () => {
   const editor = useEditor({
-    extensions: [StarterKit],
+    extensions: [
+      StarterKit,
+      TextAlign.configure({
+        types: ['heading', 'paragraph'],
+      }),
+    ],
     content: '<p>Hello World! 🌎️</p>',
     immediatelyRender: false,
     editorProps: {

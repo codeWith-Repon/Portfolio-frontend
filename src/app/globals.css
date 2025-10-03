@@ -44,3 +44,16 @@ h3 {
     grid-template-columns: var(--grid-auto);
   }
 }
+@layer base {
+  h1 {
+    font-size: 1.4rem;
+  }
+
+  h2 {
+    font-size: 1.2rem;
+  }
+
+  h3 {
+    font-size: 1.1rem;
+  }
+}
