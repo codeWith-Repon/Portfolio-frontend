@@ -1,4 +1,5 @@
 import BlogCard from '@/components/Public/BlogCard';
+import Link from 'next/link';
 import React from 'react';
 
 const blogs = [
@@ -339,7 +340,7 @@ const Blogs = () => {
         <h1 className='text-3xl font-bold'>All Blogs</h1>
         <div className=''>
           <button className='px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600 cursor-pointer'>
-            Add New Blog
+            <Link href={'/dashboard/blogs/create-blog'}>Add New Blog</Link>
           </button>
         </div>
       </div>
