@@ -48,13 +48,13 @@ const RichTextEditor = ({ content, onChange }: RichTextEditorProps) => {
     immediatelyRender: false,
     editorProps: {
       attributes: {
-        class: 'min-h-[200px] border rounded-md bg-gray-50 py-2 px-3',
+        class: 'min-h-[700px] border rounded-md bg-gray-50 py-2 px-3',
       },
     },
     onUpdate: ({ editor }) => {
-      // console.log(editor.getHTML());
-      onChange(editor.getHTML());
-    },
+      // console.log(editor.getJSON());
+      onChange(editor.getJSON() as unknown as string);
+    }
   });
 
   return (
