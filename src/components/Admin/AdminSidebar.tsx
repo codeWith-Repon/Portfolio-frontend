@@ -3,8 +3,10 @@ import Link from 'next/link';
 import React from 'react';
 import { assets } from '../../../public/assets';
 import Image from 'next/image';
-import { usePathname } from 'next/navigation';
+import { usePathname, useRouter } from 'next/navigation';
 import { LogOut } from 'lucide-react';
+import { toast } from 'sonner';
+import { logout } from '@/actions/Logout.action';
 
 const dashboardItem = [
   {
@@ -26,8 +28,21 @@ const dashboardItem = [
 
 const AdminSidebar = () => {
   const pathname = usePathname();
+  const router = useRouter();
 
-  console.log(pathname);
+  const handleLogout = async () => {
+    try {
+      const result = await logout();
+      console.log(result);
+      if (result?.success) {
+        toast.success('Successfully logged out');
+        router.push('/login');
+      }
+    } catch (error) {
+      toast.error('Something went wrong');
+      console.log(error);
+    }
+  };
 
   return (
     <div className='bg-gray-50 w-[85px] md:w-64 h-screen flex flex-col fixed inset-0'>
@@ -61,6 +76,7 @@ const AdminSidebar = () => {
         <button
           className='border px-4 py-2.5 rounded-sm w-full font-semibold
         bg-gray-300 text-gray-900 hover:bg-gray-200 transition duration-300 cursor-pointer flex items-center justify-between'
+          onClick={handleLogout}
         >
           <span className='hidden md:flex'> Log Out</span>
           <LogOut />
