@@ -13,9 +13,23 @@ export const login = async (data: LoginFormInputs) => {
         })
         console.log(res)
 
+        if (!res.ok) {
+            return {
+                success: false,
+                message:
+                    res.status === 500
+                        ? 'Server error. Please try again later.'
+                        : 'Unable to reach server. Please check your connection.',
+            };
+        }
+
         return await res.json()
 
     } catch (error) {
         console.log(error)
+        return {
+            success: false,
+            message: "Server is not responding. Please try again later."
+        }
     }
 }

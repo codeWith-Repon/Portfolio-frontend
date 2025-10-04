@@ -36,6 +36,8 @@ const LoginForm = () => {
         toast.success('Successfully logged in');
       } else if (result?.message === 'Invalid credentials.') {
         toast.error('Invalid credentials.');
+      } else {
+        toast.error(result.message);
       }
     } catch (error) {
       toast.error('Something went wrong');
