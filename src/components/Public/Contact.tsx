@@ -3,7 +3,7 @@
 
 import Image from 'next/image';
 import React, { useState } from 'react';
-import { assets } from '../../public/assets';
+import { assets } from '../../../public/assets';
 
 const Contact = () => {
   const [result, setResult] = useState('');
