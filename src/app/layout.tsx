@@ -1,6 +1,7 @@
 import type { Metadata } from 'next';
 import { Poppins, Ovo, Roboto } from 'next/font/google';
 import './globals.css';
+import { Toaster } from 'sonner';
 
 const poppins = Poppins({
   variable: '--font-poppins',
@@ -36,6 +37,7 @@ export default function RootLayout({
         className={`${poppins.variable} ${roboto.variable} ${ovo.variable} antialiased`}
       >
         {children}
+        <Toaster richColors />
       </body>
     </html>
   );
