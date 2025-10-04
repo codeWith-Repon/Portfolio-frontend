@@ -17,7 +17,13 @@ import React from 'react';
 import ToggleButton from './ToggleButton';
 import { Editor } from '@tiptap/react';
 
-const MenuBar = ({ editor }: { editor: Editor | null }) => {
+const MenuBar = ({
+  editor,
+  onImageSelect,
+}: {
+  editor: Editor | null;
+  onImageSelect?: (file: File) => void;
+}) => {
   if (!editor) {
     return null;
   }
@@ -85,11 +91,23 @@ const MenuBar = ({ editor }: { editor: Editor | null }) => {
     },
     {
       icon: <ImageIcon className='size-4' />,
+
       onClick: () => {
-        const url = window.prompt('Enter image URL');
-        if (url) {
-          editor.chain().focus().setImage({ src: url }).run();
-        }
+        const input = document.createElement('input');
+        input.type = 'file';
+        input.accept = 'image/*';
+
+        input.onchange = async () => {
+          const file = input.files?.[0];
+          if (!file) return;
+
+          const localUrl = URL.createObjectURL(file);
+          editor.chain().focus().setImage({ src: localUrl }).run();
+
+          if (onImageSelect) onImageSelect(file);
+        };
+
+        input.click();
       },
       pressed: false,
     },

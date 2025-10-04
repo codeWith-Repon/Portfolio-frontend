@@ -11,9 +11,14 @@ import StarterKit from '@tiptap/starter-kit';
 interface RichTextEditorProps {
   content: string;
   onChange: (content: string) => void;
+  onImageSelect?: (file: File) => void;
 }
 
-const RichTextEditor = ({ content, onChange }: RichTextEditorProps) => {
+const RichTextEditor = ({
+  content,
+  onChange,
+  onImageSelect,
+}: RichTextEditorProps) => {
   const editor = useEditor({
     extensions: [
       StarterKit.configure({
@@ -54,12 +59,12 @@ const RichTextEditor = ({ content, onChange }: RichTextEditorProps) => {
     onUpdate: ({ editor }) => {
       // console.log(editor.getJSON());
       onChange(editor.getJSON() as unknown as string);
-    }
+    },
   });
 
   return (
     <div>
-      <MenuBar editor={editor} />
+      <MenuBar editor={editor} onImageSelect={onImageSelect} />
       <EditorContent editor={editor} />
     </div>
   );
