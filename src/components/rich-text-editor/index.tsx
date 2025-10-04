@@ -53,7 +53,7 @@ const RichTextEditor = ({
     immediatelyRender: false,
     editorProps: {
       attributes: {
-        class: 'min-h-[700px] border rounded-md bg-gray-50 py-2 px-3',
+        class: 'h-[400px] md:h-[700px] overflow-y-auto border rounded-md bg-gray-50 py-2 px-3',
       },
     },
     onUpdate: ({ editor }) => {

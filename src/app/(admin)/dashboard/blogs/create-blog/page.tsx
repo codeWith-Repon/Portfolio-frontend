@@ -39,7 +39,7 @@ const CreateBlog = () => {
   };
 
   return (
-    <main className='max-w-6xl mx-auto mt-10'>
+    <main className='max-w-6xl mx-auto md:mt-10'>
       <h1 className='text-2xl font-bold mb-4'>Create a Blog</h1>
       <RichTextEditor
         content={post}
