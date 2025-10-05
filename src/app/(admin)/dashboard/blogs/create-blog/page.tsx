@@ -3,9 +3,12 @@
 
 import { createBlog } from '@/actions/Blog.actions';
 import RichTextEditor from '@/components/rich-text-editor';
+import { useRouter } from 'next/navigation';
 import React from 'react';
+import { toast } from 'sonner';
 
 const CreateBlog = () => {
+  const router = useRouter();
   const [post, setPost] = React.useState<any>({
     type: 'doc',
     content: [],
@@ -13,29 +16,54 @@ const CreateBlog = () => {
   const [selectedFile, setSelectedFile] = React.useState<File | null>(null);
 
   let title = '';
-  let content = [];
 
   if (post.content.length > 0) {
     const firstNode = post.content[0];
     const innerContent = firstNode?.content;
 
-    if (innerContent?.length > 0) {
-      title = innerContent[0]?.text || '';
+    if (firstNode.type === 'heading' || firstNode.type === 'paragraph') {
+      if (innerContent?.length > 0) {
+        title = innerContent[0]?.text || '';
+      }
+    } else {
+      const secondNode = post.content[1];
+      const innerContent = secondNode?.content;
+
+      if (secondNode.type === 'heading' || secondNode.type === 'paragraph') {
+        if (innerContent?.length > 0) {
+          title = innerContent[0]?.text || '';
+        }
+      }
     }
-    content = post.content.slice(1);
   }
 
   const handleCreate = async () => {
     const formData = new FormData();
-    formData.append('title', title);
-    formData.append('content', JSON.stringify(content));
-    formData.append('tags', JSON.stringify(['Programming']));
-    formData.append('authorId', '1');
+
+    const payload = {
+      title,
+      content: post,
+      tags: ['programming'],
+      authorId: 1,
+    };
+
+    formData.append('data', JSON.stringify(payload));
 
     if (selectedFile) {
       formData.append('file', selectedFile);
     }
-    await createBlog(formData);
+
+    try {
+      const result = await createBlog(formData);
+      console.log('✅ Blog created:', result);
+      if (result.success) {
+        toast.success('Blog created successfully');
+        router.push('/dashboard/blogs');
+      }
+    } catch (err) {
+      toast.error('Something went wrong');
+      console.error('❌ Blog create failed', err);
+    }
   };
 
   return (

@@ -4,13 +4,13 @@ import MenuBar from '@/components/rich-text-editor/menu-bar';
 import Highlight from '@tiptap/extension-highlight';
 import Placeholder from '@tiptap/extension-placeholder';
 import TextAlign from '@tiptap/extension-text-align';
-import { useEditor, EditorContent } from '@tiptap/react';
+import { useEditor, EditorContent, JSONContent } from '@tiptap/react';
 import Image from '@tiptap/extension-image';
 import StarterKit from '@tiptap/starter-kit';
 
 interface RichTextEditorProps {
-  content: string;
-  onChange: (content: string) => void;
+  content: JSONContent;
+  onChange: (content: JSONContent) => void;
   onImageSelect?: (file: File) => void;
 }
 
@@ -58,7 +58,7 @@ const RichTextEditor = ({
     },
     onUpdate: ({ editor }) => {
       // console.log(editor.getJSON());
-      onChange(editor.getJSON() as unknown as string);
+      onChange(editor.getJSON());
     },
   });
 
