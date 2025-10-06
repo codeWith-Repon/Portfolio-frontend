@@ -13,7 +13,6 @@ const Blogs = async () => {
     toast.error('Failed to fetch blogs');
   }
   const { data: blogData } = await res.json();
-  console.log(blogData);
   return (
     <div className='max-w-6xl mx-auto'>
       <div className='flex items-center justify-between mb-6'>

@@ -1,3 +1,4 @@
+import BlogContent from '@/lib/tiptapToHtml';
 import React from 'react';
 
 const blogDetails = async ({
@@ -5,8 +6,19 @@ const blogDetails = async ({
 }: {
   params: Promise<{ slug: string }>;
 }) => {
-  console.log((await params).slug);
-  return <div>blogDetails</div>;
+  const slug = (await params).slug;
+
+  const res = await fetch(`${process.env.NEXT_PUBLIC_BASE_API}/posts/${slug}`, {
+    cache: 'no-store',
+  });
+  const { data } = await res.json();
+
+  console.log(data);
+  return (
+    <article className='prose mx-auto py-10'>
+      <BlogContent content={data.content} />
+    </article>
+  );
 };
 
 export default blogDetails;
