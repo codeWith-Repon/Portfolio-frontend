@@ -17,20 +17,3 @@ export const addProject = async (data: FormData) => {
         throw error
     }
 }
-
-export const getAllProject = async () => {
-    try {
-        const res = await fetch(`${process.env.NEXT_PUBLIC_BASE_API}/projects`, {
-            cache: 'no-cache',
-        })
-
-        if (!res.ok) throw new Error("Failed to fetch projects");
-
-        const result = (await res).json()
-        console.log(result)
-        return result
-    } catch (error) {
-        console.log(error);
-        throw error
-    }
-}
