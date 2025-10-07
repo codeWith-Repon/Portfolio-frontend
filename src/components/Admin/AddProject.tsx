@@ -6,6 +6,8 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import { addProject } from '@/actions/Project.actions';
 import { toast } from 'sonner';
 import { useRouter } from 'next/navigation';
+import { useState } from 'react';
+import { Loader } from 'lucide-react';
 
 const projectSchema = z.object({
   title: z.string().min(3, 'Title must be at least 3 characters long'),
@@ -26,6 +28,7 @@ const projectSchema = z.object({
 
 export default function AddProjectForm() {
   const router = useRouter();
+  const [isLoading, setIsLoading] = useState(false);
   const {
     register,
     handleSubmit,
@@ -49,6 +52,7 @@ export default function AddProjectForm() {
   });
 
   const onSubmit = async (data: z.infer<typeof projectSchema>) => {
+    setIsLoading(true);
     try {
       const formData = new FormData();
 
@@ -90,6 +94,8 @@ export default function AddProjectForm() {
     } catch (error) {
       toast.error('Something went wrong');
       console.log(error);
+    } finally {
+      setIsLoading(false);
     }
   };
 
@@ -199,9 +205,13 @@ export default function AddProjectForm() {
 
       <button
         type='submit'
-        className='bg-blue-600 text-white px-6 py-2 rounded hover:bg-blue-700 cursor-pointer'
+        disabled={isLoading}
+        className={`bg-blue-600 text-white  py-2 rounded hover:bg-blue-700 cursor-pointer ${
+          isLoading ? 'opacity-50 cursor-not-allowed flex px-2 gap-1' : 'px-6'
+        }`}
       >
-        Submit Project
+        {isLoading && <Loader className='animate-spin' />}
+        {isLoading ? 'Submitting...' : 'Submit Project'}
       </button>
     </form>
   );
