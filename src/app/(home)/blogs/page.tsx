@@ -8,9 +8,8 @@ const BlogsPage = async () => {
   });
   const { data: blogData } = await res.json();
 
-
   return (
-    <div className='mt-25 max-w-6xl mx-auto grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4'>
+    <div className='w-full px-[12%]  grid grid-cols-auto  my-25 gap-5 '>
       {blogData.map((blog: IBlog) => (
         <BlogCard key={blog.slug} blog={blog} />
       ))}
