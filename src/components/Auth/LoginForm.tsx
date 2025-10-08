@@ -1,7 +1,7 @@
 'use client';
 
 import Image from 'next/image';
-import React from 'react';
+import React, { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { assets } from '../../../public/assets';
 import { login } from '@/actions/Login.action';
@@ -14,6 +14,7 @@ export type LoginFormInputs = {
 };
 
 const LoginForm = () => {
+  const [loading, setLoading] = useState(false);
   const router = useRouter();
 
   const {
@@ -29,6 +30,7 @@ const LoginForm = () => {
 
   const onSubmit = async (data: LoginFormInputs) => {
     try {
+      setLoading(true);
       const result = await login(data);
       console.log(result, 'from client');
       if (result?.success) {
@@ -42,6 +44,8 @@ const LoginForm = () => {
     } catch (error) {
       toast.error('Something went wrong');
       console.log(error);
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -103,9 +107,10 @@ const LoginForm = () => {
           <div>
             <button
               type='submit'
-              className='flex w-full justify-center rounded-md bg-indigo-500 px-3 py-1.5 text-sm/6 font-semibold hover:bg-indigo-400 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-500 cursor-pointer'
+              className='flex w-full justify-center rounded-md bg-indigo-500 px-3 py-1.5 text-sm/6 font-semibold hover:bg-indigo-400 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-500 cursor-pointer disabled:bg-indigo-500/60 disabled:cursor-not-allowed'
+              disabled={loading}
             >
-              Sign in
+              {loading ? <span>Signing in...</span> : <span>Sign in</span>}
             </button>
           </div>
         </form>
