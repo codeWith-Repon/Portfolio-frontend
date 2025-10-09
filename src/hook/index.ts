@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-// src/hooks/useCurrentUser.ts
+
 'use client';
 import { useEffect, useState } from 'react';
 
@@ -9,9 +9,19 @@ export const useCurrentUser = () => {
 
     useEffect(() => {
         const fetchUser = async () => {
+            const token = localStorage.getItem('accessToken');
+
+            if (!token) {
+                setLoading(false);
+                setUser(null);
+                return;
+            }
             try {
                 const res = await fetch(`${process.env.NEXT_PUBLIC_BASE_API}/auth/me`, {
-                    credentials: 'include',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        Authorization: `Bearer ${localStorage.getItem('accessToken')}`,
+                    },
                 });
                 const data = await res.json();
                 if (data.success) setUser(data.data);

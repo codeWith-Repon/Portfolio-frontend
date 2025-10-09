@@ -8,10 +8,8 @@ export const login = async (data: LoginFormInputs) => {
             headers: {
                 "Content-Type": "application/json"
             },
-            credentials: 'include',
-            body: JSON.stringify(data)
+            body: JSON.stringify(data),
         })
-        console.log(res)
 
         if (!res.ok) {
             return {
@@ -23,7 +21,13 @@ export const login = async (data: LoginFormInputs) => {
             };
         }
 
-        return await res.json()
+        const result = await res.json()
+
+        if (res.ok && result.data.accessToken) {
+            localStorage.setItem("accessToken", result.data.accessToken)
+        }
+
+        return result
 
     } catch (error) {
         console.log(error)

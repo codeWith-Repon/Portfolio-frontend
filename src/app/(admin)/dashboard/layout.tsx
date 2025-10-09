@@ -19,6 +19,14 @@ const AdminDashboardLayout = ({ children }: { children: React.ReactNode }) => {
     return () => clearTimeout(timeOut);
   }, [pathname]);
 
+  useEffect(() => {
+    const token = localStorage.getItem('accessToken');
+
+    if (!userLoading && (!user || !token)) {
+      router.replace('/login');
+    }
+  }, [user, userLoading, router, pathname]);
+
   if (userLoading || loading)
     return (
       <div className='ml-[85px] md:ml-64 flex items-center justify-center min-h-screen'>
@@ -27,7 +35,6 @@ const AdminDashboardLayout = ({ children }: { children: React.ReactNode }) => {
     );
 
   if (!user) {
-    router.replace('/login');
     return null;
   }
 
