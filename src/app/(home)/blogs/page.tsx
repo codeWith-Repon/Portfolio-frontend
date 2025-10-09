@@ -2,6 +2,12 @@ import BlogCard from '@/components/Public/BlogCard';
 import { IBlog } from '@/types';
 import React from 'react';
 
+export const metadata = {
+  title: 'Blog | Repon – Web Development, Programming & Tech Insights',
+  description:
+    'Read Repon’s latest blogs on web development, JavaScript, React, Next.js, Node.js, and modern programming practices. Explore coding tutorials, tips, and insights from real-world development experience.',
+};
+
 const BlogsPage = async () => {
   const res = await fetch(`${process.env.NEXT_PUBLIC_BASE_API}/posts`, {
     cache: 'no-store',

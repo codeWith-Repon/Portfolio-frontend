@@ -1,4 +1,3 @@
-import type { Metadata } from 'next';
 import { Poppins, Ovo, Roboto } from 'next/font/google';
 import './globals.css';
 import { Toaster } from 'sonner';
@@ -21,10 +20,7 @@ const roboto = Roboto({
   weight: ['300', '400', '500', '600', '700'],
 });
 
-export const metadata: Metadata = {
-  title: 'Repon Portfolio',
-  description: 'This is my portfolio website built with Next.js',
-};
+
 
 export default function RootLayout({
   children,

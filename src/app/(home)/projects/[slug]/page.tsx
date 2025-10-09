@@ -3,6 +3,31 @@ import Image from 'next/image';
 import Link from 'next/link';
 import React from 'react';
 
+export const generateMetadata = async ({
+  params,
+}: {
+  params: Promise<{ slug: string }>;
+}) => {
+  const { slug } = await params;
+
+  const res = await fetch(
+    `${process.env.NEXT_PUBLIC_BASE_API}/projects/${slug}`,
+    {
+      cache: 'no-store',
+    }
+  );
+  const { data } = await res.json();
+
+  return {
+    title:
+      `${data.title} | Repon's Portfolio` ||
+      'Projects | Repon – Web Development Portfolio',
+    description:
+      data.description ||
+      'Explore Repon’s web development projects, built using React, Next.js, Node.js, and other modern technologies. See live demos and case studies of real-world applications.',
+  };
+};
+
 const ProjectDetails = async ({
   params,
 }: {

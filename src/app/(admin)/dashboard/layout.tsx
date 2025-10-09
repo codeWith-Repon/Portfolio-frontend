@@ -27,7 +27,7 @@ const AdminDashboardLayout = ({ children }: { children: React.ReactNode }) => {
     }
   }, [user, userLoading, router, pathname]);
 
-  if (userLoading || loading)
+  if (userLoading)
     return (
       <div className='ml-[85px] md:ml-64 flex items-center justify-center min-h-screen'>
         <Loading />
