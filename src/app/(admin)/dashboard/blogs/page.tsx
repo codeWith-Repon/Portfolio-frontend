@@ -25,25 +25,26 @@ const Blogs = async () => {
       </div>
 
       <div className='flex flex-col gap-3'>
-        {blogData.map((blog: IBlog) => (
-          <div key={blog.slug} className='border p-3 rounded-md'>
-            <Link
-              href={`/dashboard/blogs/${blog.slug}`}
-              className='flex items-center justify-between'
-            >
-              <h2 className='text-base font-semibold text-gray-700'>
-                {blog.title}
-              </h2>
-              <Image
-                src={blog.thumbnail}
-                alt={blog.title}
-                width={150}
-                height={150}
-                className='w-16 h-16 object-cover rounded-md'
-              />
-            </Link>
-          </div>
-        ))}
+        {blogData &&
+          blogData.data.map((blog: IBlog) => (
+            <div key={blog.slug} className='border p-3 rounded-md'>
+              <Link
+                href={`/dashboard/blogs/${blog.slug}`}
+                className='flex items-center justify-between'
+              >
+                <h2 className='text-base font-semibold text-gray-700'>
+                  {blog.title}
+                </h2>
+                <Image
+                  src={blog.thumbnail}
+                  alt={blog.title}
+                  width={150}
+                  height={150}
+                  className='w-16 h-16 object-cover rounded-md'
+                />
+              </Link>
+            </div>
+          ))}
       </div>
     </div>
   );

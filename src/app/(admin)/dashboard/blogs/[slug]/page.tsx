@@ -1,4 +1,4 @@
-import BlogContent from '@/lib/tiptapToHtml';
+import RichTextEditor from '@/components/rich-text-editor';
 import React from 'react';
 
 const blogDetails = async ({
@@ -16,7 +16,7 @@ const blogDetails = async ({
   console.log(data);
   return (
     <article className='prose mx-auto py-10'>
-      <BlogContent content={data.content} />
+      <RichTextEditor content={data.content} />
     </article>
   );
 };

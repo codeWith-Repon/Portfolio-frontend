@@ -10,16 +10,20 @@ import StarterKit from '@tiptap/starter-kit';
 
 interface RichTextEditorProps {
   content: JSONContent;
-  onChange: (content: JSONContent) => void;
+  onChange?: (content: JSONContent) => void;
   onImageSelect?: (file: File) => void;
+  editable?: boolean;
 }
 
 const RichTextEditor = ({
   content,
   onChange,
   onImageSelect,
+  editable,
 }: RichTextEditorProps) => {
+  const isEditable = editable ?? true;
   const editor = useEditor({
+    editable: isEditable,
     extensions: [
       StarterKit.configure({
         bulletList: {
@@ -53,18 +57,20 @@ const RichTextEditor = ({
     immediatelyRender: false,
     editorProps: {
       attributes: {
-        class: 'h-[400px] md:h-[700px] overflow-y-auto border rounded-md bg-gray-50 py-2 px-3',
+        class: isEditable
+          ? 'h-[400px] md:h-[700px] overflow-y-auto border rounded-md bg-gray-50 py-2 px-3'
+          : '',
       },
     },
     onUpdate: ({ editor }) => {
       // console.log(editor.getJSON());
-      onChange(editor.getJSON());
+      if (onChange) onChange(editor.getJSON());
     },
   });
 
   return (
     <div>
-      <MenuBar editor={editor} onImageSelect={onImageSelect} />
+      {isEditable && <MenuBar editor={editor} onImageSelect={onImageSelect} />}
       <EditorContent editor={editor} />
     </div>
   );

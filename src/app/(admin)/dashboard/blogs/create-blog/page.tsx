@@ -3,8 +3,9 @@
 
 import { createBlog } from '@/actions/Blog.actions';
 import RichTextEditor from '@/components/rich-text-editor';
+import { useCurrentUser } from '@/hook';
 import { useRouter } from 'next/navigation';
-import React from 'react';
+import React, { useState } from 'react';
 import { toast } from 'sonner';
 
 const CreateBlog = () => {
@@ -14,28 +15,8 @@ const CreateBlog = () => {
     content: [],
   });
   const [selectedFile, setSelectedFile] = React.useState<File | null>(null);
-
-  let title = '';
-
-  if (post.content.length > 0) {
-    const firstNode = post.content[0];
-    const innerContent = firstNode?.content;
-
-    if (firstNode.type === 'heading' || firstNode.type === 'paragraph') {
-      if (innerContent?.length > 0) {
-        title = innerContent[0]?.text || '';
-      }
-    } else {
-      const secondNode = post.content[1];
-      const innerContent = secondNode?.content;
-
-      if (secondNode.type === 'heading' || secondNode.type === 'paragraph') {
-        if (innerContent?.length > 0) {
-          title = innerContent[0]?.text || '';
-        }
-      }
-    }
-  }
+  const [title, setTitle] = useState('');
+  const { user } = useCurrentUser();
 
   const handleCreate = async () => {
     const formData = new FormData();
@@ -44,7 +25,7 @@ const CreateBlog = () => {
       title,
       content: post,
       tags: ['programming'],
-      authorId: 1,
+      authorId: user.id,
     };
 
     formData.append('data', JSON.stringify(payload));
@@ -67,16 +48,36 @@ const CreateBlog = () => {
   };
 
   return (
-    <main className='max-w-6xl mx-auto md:mt-10'>
+    <main className='max-w-6xl mx-auto md:my-5 '>
       <h1 className='text-2xl font-bold mb-4'>Create a Blog</h1>
-      <RichTextEditor
-        content={post}
-        onChange={setPost}
-        onImageSelect={(file: File) => setSelectedFile(file)}
-      />
+      <div className='flex flex-col gap-4'>
+        <div className='flex flex-col gap-2'>
+          <label htmlFor='title' className='text-xl '>
+            Title
+          </label>
+          <input
+            id='title'
+            value={title}
+            onChange={(e) => setTitle(e.target.value)}
+            placeholder='Enter blog title...'
+            className='border p-4 rounded'
+          />
+        </div>
+
+        <div className=' flex flex-col gap-2'>
+          <h1 className='text-xl'>Content</h1>
+          <RichTextEditor
+            content={post}
+            onChange={setPost}
+            onImageSelect={(file: File) => setSelectedFile(file)}
+          />
+        </div>
+      </div>
+
       <button
-        className='mt-4 px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600 cursor-pointer'
+        className='mt-4 px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600 cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed'
         onClick={() => handleCreate()}
+        disabled={title.trim().length > 5 ? false : true}
       >
         Create Blog
       </button>

@@ -1,4 +1,4 @@
-import BlogContent from '@/lib/tiptapToHtml';
+import RichTextEditor from '@/components/rich-text-editor';
 import React from 'react';
 
 export async function generateMetadata({
@@ -27,7 +27,7 @@ const page = async ({ params }: { params: Promise<{ slug: string }> }) => {
 
   return (
     <div className='max-w-6xl mx-auto mt-25'>
-      <BlogContent content={data.content} />
+      <RichTextEditor content={data.content} editable={false} />
     </div>
   );
 };

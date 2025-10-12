@@ -21,8 +21,8 @@ const Projects = () => {
             cache: 'no-cache',
           }
         );
-        const { data } = await res.json();
-        setProjects(data);
+        const { data: projects } = await res.json();
+        setProjects(projects.data);
       } catch (error) {
         console.log('Error fetching projects:', error);
       } finally {
@@ -57,22 +57,23 @@ const Projects = () => {
       </div>
 
       <div className='flex flex-col gap-2'>
-        {projects.map((item) => (
-          <Link key={item.slug} href={`/projects/${item.slug}`}>
-            <div className='flex items-center justify-between border p-3 rounded-md'>
-              <div className='flex flex-col gap-2'>
-                <h1 className='text-2xl font-semibold'>{item.title}</h1>
-                <p className='text-gray-600'>{item.description}</p>
+        {projects &&
+          projects.map((item) => (
+            <Link key={item.slug} href={`/projects/${item.slug}`}>
+              <div className='flex items-center justify-between border p-3 rounded-md'>
+                <div className='flex flex-col gap-2'>
+                  <h1 className='text-2xl font-semibold'>{item.title}</h1>
+                  <p className='text-gray-600'>{item.description}</p>
+                </div>
+                <Image
+                  src={item.thumbnails[0]}
+                  alt={item.title}
+                  width={200}
+                  height={200}
+                />
               </div>
-              <Image
-                src={item.thumbnails[0]}
-                alt={item.title}
-                width={200}
-                height={200}
-              />
-            </div>
-          </Link>
-        ))}
+            </Link>
+          ))}
       </div>
     </div>
   );
