@@ -14,14 +14,15 @@ const ProjectsPage = async () => {
     cache: 'no-store',
   });
 
-  const { data } = await res.json();
+  const { data: projectData } = await res.json();
 
   return (
     <div className='w-full px-[12%] py-20'>
       <div className='grid grid-cols-auto  my-10 gap-5'>
-        {data.map((project: IProject) => (
-          <ProjectCard key={project.slug} project={project} />
-        ))}
+        {projectData &&
+          projectData.data.map((project: IProject) => (
+            <ProjectCard key={project.slug} project={project} />
+          ))}
       </div>
     </div>
   );

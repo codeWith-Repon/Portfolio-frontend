@@ -16,9 +16,10 @@ const BlogsPage = async () => {
 
   return (
     <div className='w-full px-[12%]  grid grid-cols-auto  my-25 gap-5 '>
-      {blogData.map((blog: IBlog) => (
-        <BlogCard key={blog.slug} blog={blog} />
-      ))}
+      {blogData &&
+        blogData.data.map((blog: IBlog) => (
+          <BlogCard key={blog.slug} blog={blog} />
+        ))}
     </div>
   );
 };
