@@ -1,52 +1,77 @@
-import { IBlog } from '@/types';
-import Image from 'next/image';
 import Link from 'next/link';
-import React from 'react';
+import Image from 'next/image';
+import { IBlog } from '@/types';
 
-const BlogCard = ({ blog }: { blog: IBlog }) => {
+export default function BlogCard({ blog }: { blog: IBlog }) {
   return (
-    <div className='border border-gray-200 rounded-lg overflow-hidden'>
-      <Link
-        href={`/blogs/${blog.slug}`}
-        className='max-w-sm rounded-lg shadow-sm '
-      >
-        <Image
-          className='rounded-t-lg object-cover '
-          src={blog.thumbnail}
-          width={400}
-          height={200}
-          alt=''
-        />
+    <Link
+      href={`/blogs/${blog.slug}`}
+      className='block group transform hover:-translate-y-1 transition-transform duration-300 h-full'
+    >
+      <div className='bg-white rounded-2xl overflow-hidden shadow-md hover:shadow-xl transition-shadow duration-300 flex flex-col h-full'>
+        {blog.thumbnail ? (
+          <div className='relative h-56 w-full overflow-hidden'>
+            <Image
+              src={blog.thumbnail}
+              alt={blog.title}
+              fill
+              className='object-cover group-hover:scale-105 transition-transform duration-300'
+            />
+          </div>
+        ) : (
+          <div className='h-56 w-full bg-gray-200 dark:bg-gray-700 flex items-center justify-center text-gray-500 dark:text-gray-300'>
+            No Image
+          </div>
+        )}
 
-        <div className='py-5 px-2'>
-          <h5 className='mb-2 text-xl font-bold tracking-tight text-gray-700 '>
+        <div className='p-6'>
+          <h3 className='text-xl font-bold mb-2 group-hover:text-blue-600 transition-colors'>
             {blog.title}
-          </h5>
-          <Link
-            href={`/blogs/${blog.slug}`}
-            className='inline-flex items-center px-3 py-2 text-sm font-medium text-center text-white bg-blue-700 rounded-lg hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800'
-          >
-            Read more
-            <svg
-              className='rtl:rotate-180 w-3.5 h-3.5 ms-2'
-              aria-hidden='true'
-              xmlns='http://www.w3.org/2000/svg'
-              fill='none'
-              viewBox='0 0 14 10'
-            >
-              <path
-                stroke='currentColor'
-                stroke-linecap='round'
-                stroke-linejoin='round'
-                stroke-width='2'
-                d='M1 5h12m0 0L9 1m4 4L9 9'
-              />
-            </svg>
-          </Link>
-        </div>
-      </Link>
-    </div>
-  );
-};
+          </h3>
 
-export default BlogCard;
+          <div className='flex items-center justify-between mb-4'>
+            <div className='flex items-center gap-2'>
+              <Image
+                src={
+                  blog.author.picture ||
+                  'https://cdn-icons-png.flaticon.com/512/9385/9385289.png'
+                }
+                alt={blog.author.name}
+                width={36}
+                height={36}
+                className='rounded-full border-2 border-gray-200 dark:border-gray-700'
+              />
+              <span className='text-gray-700 text-sm flex items-center gap-1'>
+                {blog.author.name}
+
+                <svg
+                  xmlns='http://www.w3.org/2000/svg'
+                  className='h-4 w-4 text-blue-500'
+                  fill='none'
+                  viewBox='0 0 24 24'
+                  stroke='currentColor'
+                >
+                  <path
+                    strokeLinecap='round'
+                    strokeLinejoin='round'
+                    strokeWidth={3}
+                    d='M5 13l4 4L19 7'
+                  />
+                </svg>
+              </span>
+            </div>
+            <span className='text-gray-500 dark:text-gray-400 text-sm'>
+              {blog.views} views
+            </span>
+          </div>
+
+          <div className='text-right'>
+            <span className='text-blue-600 dark:text-blue-400 font-semibold text-sm hover:underline'>
+              Read More →
+            </span>
+          </div>
+        </div>
+      </div>
+    </Link>
+  );
+}
