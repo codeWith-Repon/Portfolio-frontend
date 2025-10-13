@@ -10,6 +10,7 @@ import { toast } from 'sonner';
 
 const CreateBlog = () => {
   const router = useRouter();
+  const [loading, setLoading] = useState(false);
   const [post, setPost] = React.useState<any>({
     type: 'doc',
     content: [],
@@ -19,6 +20,7 @@ const CreateBlog = () => {
   const { user } = useCurrentUser();
 
   const handleCreate = async () => {
+    setLoading(true);
     const formData = new FormData();
 
     const payload = {
@@ -43,6 +45,8 @@ const CreateBlog = () => {
     } catch (err) {
       toast.error('Something went wrong');
       console.error('❌ Blog create failed', err);
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -76,9 +80,9 @@ const CreateBlog = () => {
       <button
         className='mt-4 px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600 cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed'
         onClick={() => handleCreate()}
-        disabled={title.trim().length > 5 ? false : true}
+        disabled={title.trim().length > 5 && !loading ? false : true}
       >
-        Create Blog
+        {loading ? 'Creating...' : 'Create Blog'}
       </button>
     </main>
   );
