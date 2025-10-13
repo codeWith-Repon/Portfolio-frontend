@@ -77,7 +77,6 @@ export default function ProjectForm({
 
   const handleFormSubmit = async (data: z.infer<typeof projectSchema>) => {
     setIsLoading(true);
-    console.log(data, 'before ');
     try {
       const formData = new FormData();
 

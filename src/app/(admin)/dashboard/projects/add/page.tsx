@@ -10,7 +10,8 @@ const AddProject = () => {
   const router = useRouter();
 
   const handleAddProject = async (FormData: FormData) => {
-    const result = await addProject(FormData);
+    const token = localStorage.getItem('accessToken');
+    const result = await addProject(FormData, token!);
 
     if (result.success) {
       toast.success('Project added successfully');

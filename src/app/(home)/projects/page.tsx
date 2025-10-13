@@ -1,4 +1,4 @@
-import ProjectCard from '@/components/ProjectCard';
+import ProjectCard from '@/components/Public/ProjectCard';
 import { IProject } from '@/types';
 import { Metadata } from 'next';
 import React from 'react';
@@ -11,7 +11,7 @@ export const metadata: Metadata = {
 
 const ProjectsPage = async () => {
   const res = await fetch(`${process.env.NEXT_PUBLIC_BASE_API}/projects`, {
-    cache: 'no-store',
+    next: { revalidate: 3600 },
   });
 
   const { data: projectData } = await res.json();

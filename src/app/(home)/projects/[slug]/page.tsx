@@ -121,7 +121,7 @@ const ProjectDetails = async ({
           ))}
         </ul>
       </div>
-      <div className='grid grid-cols-auto my-10 gap-5'>
+      <div className='grid grid-cols-1  md:grid-cols-4 my-10 gap-5'>
         {data.thumbnails.map((thumbnail: string, index: number) => (
           <Image
             key={index}

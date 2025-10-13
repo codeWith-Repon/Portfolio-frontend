@@ -2,7 +2,7 @@ import Image from 'next/image';
 import React from 'react';
 import { assets } from '../../../public/assets';
 import Link from 'next/link';
-import ProjectCard from './ProjectCard';
+import ProjectCard from './ProjectCardHome';
 
 const Work = () => {
   return (
