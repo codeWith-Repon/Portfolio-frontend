@@ -1,10 +1,25 @@
-import AddProjectForm from '@/components/Admin/AddProject';
+'use client';
+
+import { addProject } from '@/actions/Project.actions';
+import ProjectForm from '@/components/Admin/ProjectForm';
+import { useRouter } from 'next/navigation';
 import React from 'react';
+import { toast } from 'sonner';
 
 const AddProject = () => {
+  const router = useRouter();
+
+  const handleAddProject = async (FormData: FormData) => {
+    const result = await addProject(FormData);
+
+    if (result.success) {
+      toast.success('Project added successfully');
+      router.push('/dashboard/projects');
+    }
+  };
   return (
     <div className='mt-10'>
-      <AddProjectForm />
+      <ProjectForm onSubmit={handleAddProject} />
     </div>
   );
 };

@@ -3,56 +3,81 @@
 import { z } from 'zod';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
-import { addProject } from '@/actions/Project.actions';
 import { toast } from 'sonner';
-import { useRouter } from 'next/navigation';
 import { useState } from 'react';
 import { Loader } from 'lucide-react';
+import { IProject } from '@/types';
+import Image from 'next/image';
 
-const projectSchema = z.object({
-  title: z.string().min(3, 'Title must be at least 3 characters long'),
-  description: z.string().min(10, 'Description is too short'),
-  technologies: z.string(),
-  features: z.string().optional(),
-  liveUrl: z.string().url('Must be a valid URL'),
-  githubFrontend: z.string().url('Invalid URL').optional(),
-  githubBackend: z.string().url('Invalid URL').optional(),
-  isFeatured: z.boolean().catch(false),
-  thumbnails: z
-    .any()
-    .refine(
-      (files) => files && files.length > 0,
-      'At least one thumbnail image is required'
-    ),
-});
+interface IProjectFormProps {
+  initialData?: IProject;
+  onSubmit: (formData: FormData) => Promise<void>;
+  isEditing?: boolean;
+}
+export default function ProjectForm({
+  initialData,
+  onSubmit,
+  isEditing = false,
+}: IProjectFormProps) {
+  const projectSchema = z.object({
+    title: z.string().min(3, 'Title must be at least 3 characters long'),
+    description: z.string().min(10, 'Description is too short'),
+    technologies: z.string().refine((val) => val.split(',').length >= 2, {
+      message: 'At least two technologies are required',
+    }),
+    features: z.string().refine((val) => val.split(',').length >= 2, {
+      message: 'At least two features are required',
+    }),
+    liveUrl: z.string().url('Must be a valid URL'),
+    githubFrontend: z.string().url('Invalid URL').optional(),
+    githubBackend: z.string().url('Invalid URL').optional(),
+    isFeatured: z.boolean().catch(false),
+    thumbnails: isEditing
+      ? z.any().optional()
+      : z
+          .any()
+          .refine(
+            (files) => files && files.length > 0,
+            'At least one thumbnail image is required'
+          ),
+  });
 
-export default function AddProjectForm() {
-  const router = useRouter();
   const [isLoading, setIsLoading] = useState(false);
+
   const {
     register,
     handleSubmit,
     formState: { errors },
   } = useForm<z.infer<typeof projectSchema>>({
     resolver: zodResolver(projectSchema),
-    defaultValues:
-      process.env.NODE_ENV === 'development'
-        ? {
-            title: 'Next.js Portfolio Website',
-            description:
-              'A modern developer portfolio built using Next.js, Tailwind CSS, and TypeScript. Fully responsive and SEO optimized.',
-            technologies: 'Next.js, TailwindCSS, TypeScript, Prisma',
-            features: 'Dark Mode, SEO Optimization, Responsive Design',
-            liveUrl: 'https://portfolio-demo.vercel.app',
-            githubFrontend: 'https://github.com/yourname/portfolio-frontend',
-            githubBackend: 'https://github.com/yourname/portfolio-backend',
-            isFeatured: false,
-          }
-        : undefined,
+    defaultValues: initialData
+      ? {
+          title: initialData.title,
+          description: initialData.description,
+          technologies: initialData.technologies?.join(', ') || '',
+          features: initialData.features?.join(', ') || '',
+          liveUrl: initialData.liveUrl,
+          githubFrontend: initialData.githubUrls?.frontend || '',
+          githubBackend: initialData.githubUrls?.backend || '',
+          isFeatured: initialData.isFeatured,
+          thumbnails: [],
+        }
+      : {
+          title: '',
+          description: '',
+          technologies: '',
+          features: '',
+          liveUrl: '',
+          githubFrontend: '',
+          githubBackend: '',
+          isFeatured: false,
+          thumbnails: [],
+        },
   });
 
-  const onSubmit = async (data: z.infer<typeof projectSchema>) => {
+  const handleFormSubmit = async (data: z.infer<typeof projectSchema>) => {
     setIsLoading(true);
+    console.log(data, 'before ');
     try {
       const formData = new FormData();
 
@@ -61,15 +86,17 @@ export default function AddProjectForm() {
       formData.append('liveUrl', data.liveUrl);
       formData.append('isFeatured', String(data.isFeatured));
 
-      data.technologies
-        .split(',')
-        .map((tech) => tech.trim())
-        .forEach((t) => formData.append('technologies', t));
+      if (data.technologies)
+        data.technologies
+          .split(',')
+          .map((tech) => tech.trim())
+          .forEach((t) => formData.append('technologies', t));
 
-      data.features
-        ?.split(',')
-        .map((feature) => feature.trim())
-        .forEach((f) => formData.append('features', f));
+      if (data.features)
+        data.features
+          ?.split(',')
+          .map((feature) => feature.trim())
+          .forEach((f) => formData.append('features', f));
 
       const githubUrls = {
         frontend: data.githubFrontend || '',
@@ -85,12 +112,7 @@ export default function AddProjectForm() {
         });
       }
 
-      const result = await addProject(formData);
-      if (result.success) {
-        toast.success('Project added successfully');
-        router.push('/dashboard/projects');
-      }
-      console.log(result);
+      await onSubmit(formData);
     } catch (error) {
       toast.error('Something went wrong');
       console.log(error);
@@ -101,7 +123,7 @@ export default function AddProjectForm() {
 
   return (
     <form
-      onSubmit={handleSubmit(onSubmit)}
+      onSubmit={handleSubmit(handleFormSubmit)}
       className='max-w-2xl mx-auto p-6 space-y-4 bg-white rounded-xl shadow-md'
     >
       <h2 className='text-2xl font-bold'>Add New Project</h2>
@@ -152,6 +174,9 @@ export default function AddProjectForm() {
           placeholder='Features (comma separated)'
           className='w-full border border-gray-200 px-3 py-2 rounded-md'
         />
+        {errors.features && (
+          <p className='text-red-500 text-sm mt-1'>{errors.features.message}</p>
+        )}
       </div>
       <div className='flex flex-col gap-2'>
         <label className='text-gray-700'>Live URL</label>
@@ -184,6 +209,20 @@ export default function AddProjectForm() {
 
       <div className='flex flex-col gap-2'>
         <label className='text-gray-700'>Thumbnails</label>
+        <div className=' flex gap-2 items-center'>
+          {isEditing &&
+            initialData?.thumbnails.map((thumbnail) => (
+              <div className='flex' key={thumbnail}>
+                <Image
+                  src={thumbnail}
+                  alt='thumbnail'
+                  width={200}
+                  height={200}
+                  className=' size-32 object-cover rounded-lg'
+                />
+              </div>
+            ))}
+        </div>
         <input
           type='file'
           multiple
@@ -210,8 +249,16 @@ export default function AddProjectForm() {
           isLoading ? 'opacity-50 cursor-not-allowed flex px-2 gap-1' : 'px-6'
         }`}
       >
-        {isLoading && <Loader className='animate-spin' />}
-        {isLoading ? 'Submitting...' : 'Submit Project'}
+        {isLoading ? (
+          <>
+            <Loader className='animate-spin' />
+            {isEditing ? 'Updating...' : 'Submitting...'}
+          </>
+        ) : isEditing ? (
+          'Update Project'
+        ) : (
+          'Submit Project'
+        )}
       </button>
     </form>
   );
