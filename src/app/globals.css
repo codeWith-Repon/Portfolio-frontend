@@ -1,63 +1,114 @@
 @import 'tailwindcss';
 
-:root {
-  --color-darkHover: #2a004a;
-  --color-lightHover: #fcf4ff;
-  --color-darkTheme: #11001f;
+@theme {
+  /* This maps your HSL variables so Tailwind recognizes 'border-border' */
+  --color-background: hsl(0 0% 2%);
+  --color-foreground: hsl(204 100% 98%);
 
+  --color-card: hsl(0 0% 2%);
+  --color-card-foreground: hsl(204 100% 98%);
+
+  --color-primary: hsl(160 84% 39%);
+  --color-primary-foreground: hsl(0 0% 2%);
+
+  --color-secondary: hsl(217 32% 65%);
+  --color-secondary-foreground: hsl(204 100% 98%);
+
+  --color-muted: hsl(217 33% 17%);
+  --color-muted-foreground: hsl(204 100% 98%);
+
+  --color-accent: hsl(160 84% 39%);
+  --color-accent-foreground: hsl(0 0% 2%);
+
+  --color-border: hsl(217 33% 17%);
+  --color-input: hsl(217 33% 17%);
+  --color-ring: hsl(160 84% 39%);
+
+  --radius-lg: 0.5rem;
+
+  /* previous version: Font Variables */
   --font-poppins: 'Poppins', sans-serif;
   --font-roboto: 'Roboto', sans-serif;
-  --font-Ovo: 'Ovo, serif';
-
-  --grid-auto: repeat(auto-fit, minmax(250px, 1fr));
+  --font-ovo: 'Ovo', serif;
 }
 
-body {
-  font-family: var(--font-poppins);
+@layer components {
+  .glassmorphism {
+    @apply bg-white/10 backdrop-blur-xl border border-white/20;
+  }
+
+  .glassmorphism-dark {
+    @apply bg-white/8 backdrop-blur-md border border-white/15;
+  }
+
+  .glow-emerald {
+    @apply shadow-[0_0_30px_rgba(16,185,129,0.3)];
+  }
+
+  .glow-emerald-lg {
+    @apply shadow-[0_0_60px_rgba(16,185,129,0.4)];
+  }
+
+  .glow-text {
+    @apply text-transparent bg-clip-text bg-linear-to-r from-emerald-400 via-emerald-500 to-emerald-400;
+  }
+
+  .tech-badge {
+    @apply inline-flex px-3 py-1.5 rounded-lg text-xs font-medium bg-white/10 border border-white/20 text-white/80 backdrop-blur-sm hover:bg-white/15 transition-colors;
+  }
+
+  .card-hover {
+    @apply transition-all duration-500 hover:shadow-[0_20px_60px_rgba(16,185,129,0.3)] hover:border-emerald-500/50;
+  }
 }
 
-.font-ovo {
-  font-family: var(--font-ovo);
-}
-.font-poppins {
-  font-family: var(--font-poppins);
-}
+@layer base {
+  /* Mapping for the @apply border-border to work */
+  * {
+    border-color: var(--color-border);
+  }
 
-h1,
-h2,
-h3 {
-  font-family: var(--font-roboto);
-}
+  body {
+    background-color: var(--color-background);
+    color: var(--color-foreground);
+    font-family: var(--font-poppins);
+    @apply antialiased selection:bg-primary/30;
+  }
 
-.light-text {
-  font-family: var(--font-poppins);
-  font-weight: 200;
-}
-
-.bold-text {
-  font-family: var(--font-poppins);
-  font-weight: 600;
+  /* previous version: Headings */
+  h1 {
+    @apply font-roboto text-2xl font-bold md:text-3xl;
+  }
+  h2 {
+    @apply font-roboto text-xl font-semibold md:text-2xl;
+  }
+  h3 {
+    @apply font-roboto text-lg font-medium md:text-xl;
+  }
 }
 
 @layer utilities {
-  .grid-cols-auto {
-    grid-template-columns: var(--grid-auto);
+  .font-ovo {
+    font-family: var(--font-ovo);
+  }
+  .light-text {
+    font-family: var(--font-poppins);
+    font-weight: 200;
+  }
+  .bold-text {
+    font-family: var(--font-poppins);
+    font-weight: 600;
+  }
+
+  /* Optimized for your GSAP scroll animations */
+  .gsap-reveal {
+    opacity: 0;
+    transform: translateY(20px);
+    will-change: transform, opacity;
   }
 }
-@layer base {
-  h1 {
-    font-size: 1.4rem;
-  }
 
-  h2 {
-    font-size: 1.2rem;
-  }
-
-  h3 {
-    font-size: 1.1rem;
-  }
-}
-
+/* Tiptap Editor placeholder */
 .tiptap p.is-editor-empty:first-child::before {
   color: #adb5bd;
   content: attr(data-placeholder);
