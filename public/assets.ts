@@ -27,6 +27,8 @@ import mail_icon from "./assets/mail_icon.png"
 import blog_icon from "./assets/Admin/blog.png"
 import project_icon from "./assets/Admin/project.png"
 import dashboard from "./assets/Admin/dashboard.png"
+import rideBooking from "./websiteImages/rideBooking.png"
+import events_and_activity from "./websiteImages/events-activities.png"
 
 export const assets = {
     logo,
@@ -62,4 +64,9 @@ export const assets = {
     blog_icon,
     project_icon,
     dashboard,
+}
+
+export const webSite = {
+    rideBooking: rideBooking.src,
+    events_and_activity: events_and_activity.src
 }

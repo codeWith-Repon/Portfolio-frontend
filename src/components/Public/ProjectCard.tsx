@@ -7,7 +7,6 @@ interface ProjectProps {
 }
 
 export default function ProjectCard({ project }: ProjectProps) {
-
   const githubLinks = [
     project.links.frontend && {
       url: project.links.frontend,
@@ -19,7 +18,6 @@ export default function ProjectCard({ project }: ProjectProps) {
       project.links.github && { url: project.links.github, label: 'Code' },
   ].filter(Boolean) as { url: string; label: string }[];
 
-
   // Non-featured card with image
   return (
     <div className='group relative h-full overflow-hidden rounded-xl glassmorphism-dark card-hover flex flex-col'>
@@ -29,7 +27,11 @@ export default function ProjectCard({ project }: ProjectProps) {
       {/* Image Container */}
       <div className='relative overflow-hidden h-40 bg-linear-to-br from-emerald-900/20 to-slate-900/40 shrink-0'>
         <img
-          src={project.image}
+          src={
+            typeof project.image === 'string'
+              ? project.image
+              : project.image.src
+          }
           alt={project.title}
           className='w-full h-full object-cover transition-transform duration-500 group-hover:scale-105'
         />

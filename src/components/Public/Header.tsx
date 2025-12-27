@@ -91,7 +91,7 @@ const Header = () => {
 
               <div className='relative w-full h-full rounded-3xl border border-border bg-card/40 backdrop-blur-md flex items-center justify-center overflow-hidden shadow-2xl'>
                 <Image
-                  src={assets.profile_img}
+                  src={assets.user_image}
                   alt='Repon Ahmed'
                   className='w-full h-full object-cover scale-110 transition-all duration-700'
                 />
