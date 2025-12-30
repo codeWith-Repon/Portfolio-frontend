@@ -1,7 +1,9 @@
-import { Github, Globe } from 'lucide-react';
-import Image from 'next/image';
+import { projects } from '@/data/project';
+import { ArrowLeft, ExternalLink, Github, CheckCircle2 } from 'lucide-react';
 import Link from 'next/link';
 import React from 'react';
+import { notFound } from 'next/navigation';
+
 
 export const generateMetadata = async ({
   params,
@@ -9,22 +11,13 @@ export const generateMetadata = async ({
   params: Promise<{ slug: string }>;
 }) => {
   const { slug } = await params;
+  const project = projects.find((p) => p.slug === slug);
 
-  const res = await fetch(
-    `${process.env.NEXT_PUBLIC_BASE_API}/projects/${slug}`,
-    {
-      cache: 'no-store',
-    }
-  );
-  const { data } = await res.json();
+  if (!project) return { title: 'Project Not Found' };
 
   return {
-    title:
-      `${data.title} | Repon's Portfolio` ||
-      'Projects | Repon – Web Development Portfolio',
-    description:
-      data.description ||
-      'Explore Repon’s web development projects, built using React, Next.js, Node.js, and other modern technologies. See live demos and case studies of real-world applications.',
+    title: `${project.title} | Repon's Portfolio`,
+    description: project.description,
   };
 };
 
@@ -34,105 +27,166 @@ const ProjectDetails = async ({
   params: Promise<{ slug: string }>;
 }) => {
   const { slug } = await params;
+  const project = projects.find((p) => p.slug === slug);
 
-  const res = await fetch(
-    `${process.env.NEXT_PUBLIC_BASE_API}/projects/${slug}`,
-    {
-      cache: 'no-store',
-    }
-  );
-  const { data } = await res.json();
+  if (!project) notFound();
+
+  const links = project.links || {};
+  const githubLinks = [
+    links.frontend && { url: links.frontend, label: 'Frontend' },
+    links.backend && { url: links.backend, label: 'Backend' },
+    !links.frontend &&
+      !links.backend &&
+      links.github && { url: links.github, label: 'Code' },
+  ].filter(Boolean) as { url: string; label: string }[];
 
   return (
-    <div className='mt-22 max-w-6xl mx-auto px-5 flex flex-col gap-4'>
-      <div className='h-[400px] mb-10'>
-        <Image
-          src={data.thumbnails[0]}
-          alt={data.title}
-          width={300}
-          height={300}
-          className='w-full h-full object-contain rounded-lg'
-        />
-      </div>
-      <Link
-        href={data.liveUrl}
-        target='_blank'
-        className='text-xl font-semibold text-gray-700 flex items-center gap-2'
-      >
-        Live Preview
-        <Globe className='text-sky-500 group-hover:text-sky-600 transition-all duration-300' />
-      </Link>
-      <div className=''>
-        <h1 className='text-3xl font-bold text-gray-700'>{data.title}</h1>
-        <p className='mt-2 w-1/2 text-gray-600'>{data.description}</p>
-      </div>
+    <div className='min-h-screen bg-background my-20'>
+      <section className='md:px-6'>
+        <div className='max-w-4xl mx-auto'>
+          {/* Back Button */}
+          <Link
+            href='/projects'
+            className='inline-flex items-center gap-2 px-4 py-2 rounded-lg text-accent hover:bg-accent/10 transition-colors font-medium mb-8'
+          >
+            <ArrowLeft className='w-4 h-4' /> Back to Projects
+          </Link>
 
-      {data.githubUrls && (
-        <div className='mt-6'>
-          <h1 className='text-2xl font-semibold text-gray-700 mb-3 flex items-center gap-2'>
-            Git Repository
-            <Github className='text-gray-600' />
-          </h1>
-          {data.githubUrls.frontend && data.githubUrls.backend ? (
-            <div className='flex flex-col sm:flex-row gap-3'>
-              <Link
-                href={data.githubUrls.frontend}
-                target='_blank'
-                className='text-blue-600 hover:text-blue-800 underline flex items-center gap-2'
-              >
-                🖥️ Frontend
-              </Link>
-
-              <Link
-                href={data.githubUrls.backend}
-                target='_blank'
-                className='text-blue-600 hover:text-blue-800 underline flex items-center gap-2'
-              >
-                ⚙️ Backend
-              </Link>
+          {/* Project Header */}
+          <div className='space-y-6 mb-12 section-animate'>
+            <div className='inline-flex items-center px-4 py-2 rounded-full bg-accent/10 border border-accent/20 text-sm font-medium text-accent'>
+              {project.category}
             </div>
-          ) : null}
+            <div className='flex items-start gap-4'>
+              {project.icon && <div className='text-5xl'>{project.icon}</div>}
+              <div>
+                <h1 className='text-4xl md:text-5xl font-bold text-foreground'>
+                  {project.title}
+                </h1>
+                <p className='text-lg text-foreground/70 mt-2'>
+                  {project.description}
+                </p>
+              </div>
+            </div>
+          </div>
+
+          {/* Main Image */}
+          <div className='relative aspect-video rounded-xl overflow-hidden mb-12 border border-border section-animate'>
+            <img
+              src={project.image}
+              alt={project.title}
+              className='w-full h-full object-cover'
+            />
+          </div>
+
+          <div className='grid grid-cols-1 md:grid-cols-3 gap-12'>
+            <div className='md:col-span-2 space-y-12'>
+              {/* Description */}
+              <div className='space-y-4 section-animate'>
+                <h2 className='text-2xl font-bold'>Overview</h2>
+                <p className='text-foreground/80 leading-relaxed text-lg'>
+                  {project.longDescription}
+                </p>
+              </div>
+
+              {/* CORE FEATURES GRID */}
+              {project.features && (
+                <div className='space-y-6 section-animate'>
+                  <h2 className='text-2xl font-bold'>Core Features</h2>
+                  <div className='grid grid-cols-1 sm:grid-cols-2 gap-4'>
+                    {project.features.map((feature, i) => (
+                      <div
+                        key={i}
+                        className='flex items-center gap-3 p-4 rounded-xl bg-card border border-border group hover:border-accent transition-all'
+                      >
+                        <CheckCircle2 className='w-5 h-5 text-accent shrink-0' />
+                        <span className='font-medium text-foreground/80 group-hover:text-foreground'>
+                          {feature}
+                        </span>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              )}
+
+              {/* Tech Stack */}
+              <div className='space-y-4 section-animate'>
+                <h2 className='text-2xl font-bold'>Technologies</h2>
+                <div className='flex flex-wrap gap-2'>
+                  {project.techStack.map((tech, i) => (
+                    <span
+                      key={i}
+                      className='px-4 py-2 rounded-full bg-muted border border-border text-accent text-sm font-semibold'
+                    >
+                      {tech}
+                    </span>
+                  ))}
+                </div>
+              </div>
+            </div>
+
+            {/* Sidebar Links */}
+            <div className='space-y-6 section-animate'>
+              <div className='p-6 bg-card border border-border rounded-xl space-y-4 sticky top-24'>
+                <h3 className='font-bold text-lg'>Project Links</h3>
+                <div className='flex flex-col gap-3'>
+                  {links.live && (
+                    <a
+                      href={links.live}
+                      target='_blank'
+                      className='flex items-center justify-center gap-2 px-4 py-3 rounded-lg bg-accent text-white hover:opacity-90 font-bold transition-all'
+                    >
+                      View Live <ExternalLink className='w-4 h-4' />
+                    </a>
+                  )}
+                  {githubLinks.map((link, idx) => (
+                    <a
+                      key={idx}
+                      href={link.url}
+                      target='_blank'
+                      className='flex items-center justify-center gap-2 px-4 py-3 rounded-lg border border-border hover:bg-muted font-bold transition-all'
+                    >
+                      {link.label} <Github className='w-4 h-4' />
+                    </a>
+                  ))}
+                </div>
+              </div>
+            </div>
+          </div>
+
+          {/* More Projects Section */}
+          <div className='border-t border-border pt-12 mt-20 section-animate'>
+            <h2 className='text-2xl font-bold text-foreground mb-8'>
+              Discover More
+            </h2>
+            <div className='grid grid-cols-1 md:grid-cols-3 gap-6'>
+              {projects
+                .filter((p) => p.slug !== project.slug)
+                .slice(0, 3)
+                .map((p) => (
+                  <Link
+                    key={p.id}
+                    href={`/projects/${p.slug}`}
+                    className='group rounded-xl bg-card border border-border hover:border-accent overflow-hidden transition-all'
+                  >
+                    <div className='aspect-video overflow-hidden'>
+                      <img
+                        src={p.image}
+                        alt={p.title}
+                        className='w-full h-full object-cover group-hover:scale-105 transition-transform duration-500'
+                      />
+                    </div>
+                    <div className='p-4'>
+                      <h4 className='font-bold group-hover:text-accent transition-colors'>
+                        {p.title}
+                      </h4>
+                    </div>
+                  </Link>
+                ))}
+            </div>
+          </div>
         </div>
-      )}
-      <div className=''>
-        <h2 className='text-2xl font-semibold text-gray-700 mb-3'>Features</h2>
-        <ul className='space-y-2'>
-          {data.features.map((feature: string, index: number) => (
-            <li
-              key={index}
-              className='flex items-center gap-2 text-gray-700 text-sm bg-gray-50 p-2 rounded-md hover:bg-gray-100 transition w-1/2'
-            >
-              <span className='w-2 h-2 bg-green-500 rounded-full'></span>
-              {feature}
-            </li>
-          ))}
-        </ul>
-      </div>
-      <div className='flex flex-col gap-3'>
-        <h1 className='text-2xl font-bold text-gray-700'>Technologies</h1>
-        <ul className='flex flex-wrap gap-2'>
-          {data.technologies.map((tech: string, index: number) => (
-            <li
-              key={index}
-              className='bg-blue-50 text-blue-700 px-3 py-1 rounded-full text-sm font-medium border border-blue-200 hover:bg-blue-100 transition'
-            >
-              {tech}
-            </li>
-          ))}
-        </ul>
-      </div>
-      <div className='grid grid-cols-auto my-10 gap-5'>
-        {data.thumbnails.map((thumbnail: string, index: number) => (
-          <Image
-            key={index}
-            src={thumbnail}
-            alt={data.title}
-            width={300}
-            height={300}
-            className=' object-contain rounded-lg'
-          />
-        ))}
-      </div>
+      </section>
     </div>
   );
 };

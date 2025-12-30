@@ -1,15 +1,17 @@
 import About from '@/components/Public/About';
 import Contact from '@/components/Public/Contact';
+import FeaturedProjects from '@/components/Public/FeaturedProjects';
 import Header from '@/components/Public/Header';
-import Work from '@/components/Public/Work';
+import TechStack from '@/components/Public/TechStack';
 import React from 'react';
 
 const page = () => {
   return (
     <div>
       <Header />
+      <TechStack />
+      <FeaturedProjects />
       <About />
-      <Work />
       <Contact />
     </div>
   );

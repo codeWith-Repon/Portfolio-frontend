@@ -1,14 +1,12 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 'use client';
 
-import Image from 'next/image';
 import React, { useState } from 'react';
-import { assets } from '../../../public/assets';
 
 const Contact = () => {
   const [result, setResult] = useState('');
 
-  const onSubmit = async (event:any) => {
+  const onSubmit = async (event: any) => {
     event.preventDefault();
 
     setResult('Sending....');
@@ -33,14 +31,15 @@ const Contact = () => {
   };
 
   return (
-    <div
-      id='contact'
-      className='w-full px-[12%] py-10 scroll-mt-20 bg-[url("/footer-bg-color.png")] bg-no-repeat bg-center bg-[length:90%_auto] '
-    >
-      <h4 className='text-center mb-2 text-lg font-Ovo'>Contact with me</h4>
-      <h2 className='text-center text-5xl font-Ovo'>Get in touch</h2>
+    <div id='contact' className='w-full px-[12%] py-10 scroll-mt-20 '>
+      <h4 className='text-center mb-2 text-lg font-Ovo text-primary'>
+        Contact with me
+      </h4>
+      <h2 className='text-center text-5xl font-Ovo text-white/60'>
+        Get in touch
+      </h2>
 
-      <p className='text-center max-w-xl mx-auto mt-5 mb-12 font-Ovo'>
+      <p className='text-center max-w-xl mx-auto mt-5 mb-12 font-Ovo text-white/60 '>
         I&apos;d love to hear from you! If you have any questions, comments, or
         feedback, please use the form below.
       </p>
@@ -51,14 +50,14 @@ const Contact = () => {
             type='text'
             placeholder='Enter your name'
             required
-            className='flex-1 p-3 outline-none border-[0.5px] border-gray-400 rounded-md bg-white '
+            className='flex-1 p-3 outline-none border-[0.5px] rounded-md  border-gray-400'
             name='name'
           />
           <input
             type='email'
             placeholder='Enter your email'
             required
-            className='flex-1 p-3 outline-none border-[0.5px] border-gray-400 rounded-md bg-white '
+            className='flex-1 p-3 outline-none border-[0.5px] border-gray-400 rounded-md '
             name='email'
           />
         </div>
@@ -66,17 +65,25 @@ const Contact = () => {
           rows={6}
           placeholder='Enter your message'
           required
-          className='w-full p-4 outline-none border-[0.5px] border-gray-400 rounded-md bg-white mb-6  '
+          className='w-full p-4 outline-none border-[0.5px] border-gray-400 rounded-md mb-6  '
           name='message'
         ></textarea>
 
-        <button
-          type='submit'
-          className='py-3 px-8 w-max flex items-center justify-between gap-2 bg-black/80 text-white rounded-full mx-auto hover:bg-black duration-500 cursor-pointer '
-        >
-          Submit now{' '}
-          <Image src={assets.right_arrow_white} alt='' className='w-4' />
-        </button>
+        <div className='flex justify-center'>
+          <button
+            type='submit'
+            className='cursor-pointer group relative px-8 py-4 rounded-lg font-semibold text-white transition-all duration-500'
+          >
+            {/* Button background with glow */}
+            <div className='absolute inset-0 rounded-lg bg-linear-to-r from-emerald-500 to-emerald-600 opacity-100 group-hover:opacity-110 transition-opacity duration-300' />
+            <div className='absolute inset-0 rounded-lg glow-emerald opacity-0 group-hover:opacity-100 transition-opacity duration-500' />
+
+            {/* Button content */}
+            <span className='relative flex items-center justify-center gap-2'>
+              Submit now
+            </span>
+          </button>
+        </div>
         <p className='mt-4'>{result}</p>
       </form>
     </div>
