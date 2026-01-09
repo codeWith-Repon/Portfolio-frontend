@@ -1,6 +1,5 @@
 'use client';
 
-import React, { useEffect, useRef } from 'react';
 import Image from 'next/image';
 import { assets } from '../../../public/assets';
 import gsap from 'gsap';
