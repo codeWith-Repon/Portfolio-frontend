@@ -1,7 +1,7 @@
 import Footer from '@/components/Public/Footer';
 import Navbar from '@/components/Public/Navbar';
 import { Metadata } from 'next';
-import React from 'react';
+import React, { Suspense } from 'react';
 
 export const metadata: Metadata = {
   title: 'Repon | Home',
@@ -11,7 +11,9 @@ export const metadata: Metadata = {
 const PublicLayout = ({ children }: { children: React.ReactNode }) => {
   return (
     <div className='flex flex-col min-h-screen scroll-smooth'>
-      <Navbar />
+      <Suspense fallback={null}>
+        <Navbar />
+      </Suspense>
       <main className='grow'>{children}</main>
       <Footer />
     </div>
