@@ -73,13 +73,13 @@ const Header = () => {
                 <Image src={assets.right_arrow_white} alt='' className='w-4' />
               </Link>
 
-              <a
-                href='/sample-resume.pdf'
+              <Link
+                href='/resume.pdf'
                 download
                 className='px-10 py-4 rounded-full border border-border text-foreground font-poppins font-bold text-lg hover:bg-primary/10 transition-all duration-300 transform hover:scale-105 flex items-center justify-center gap-2'
               >
                 My Resume <DownloadIcon />
-              </a>
+              </Link>
             </div>
           </div>
 
