@@ -1,6 +1,5 @@
 'use client';
 
-import React from 'react';
 import { Github, Linkedin, Mail, ArrowUpCircle } from 'lucide-react';
 
 const Footer = () => {
@@ -10,18 +9,15 @@ const Footer = () => {
 
   return (
     <footer className='relative border-t border-white/10 bg-background pt-16 pb-8 overflow-hidden'>
-      {/* Background Glow Effect */}
-      <div className='absolute bottom-0 left-1/2 -translate-x-1/2 w-full h-px bg-linear-to-r from-transparent via-accent/50 to-transparent'></div>
-
       <div className='container max-w-7xl mx-auto px-6 sm:px-8 lg:px-12'>
-        <div className='grid grid-cols-1 md:grid-cols-3 gap-12 items-center section-animate'>
+        <div className='grid grid-cols-1 md:grid-cols-3 gap-12 items-center'>
           {/* Brand/Copyright Section */}
           <div className='text-center md:text-left space-y-4'>
             <h2 className='text-xl font-bold font-roboto tracking-tight'>
               REPON<span className='text-accent'>.DEV</span>
             </h2>
             <p className='text-sm text-foreground/50 font-poppins'>
-              © {new Date().getFullYear()} All rights reserved. <br />
+              © 2025 All rights reserved. <br />
               Built with Next.js & Tailwind CSS.
             </p>
           </div>
@@ -29,13 +25,17 @@ const Footer = () => {
           {/* Social Links with Hover Glow */}
           <div className='flex items-center justify-center gap-6'>
             {[
-              { icon: Github, href: 'https://github.com', label: 'GitHub' },
+              {
+                icon: Github,
+                href: 'https://github.com/codeWith-Repon',
+                label: 'GitHub',
+              },
               {
                 icon: Linkedin,
-                href: 'https://linkedin.com',
+                href: 'https://www.linkedin.com/in/mdrepon/',
                 label: 'LinkedIn',
               },
-              { icon: Mail, href: 'mailto:hello@example.com', label: 'Email' },
+              { icon: Mail, href: 'mailto:repon7253@gmail', label: 'Email' },
             ].map((social, i) => (
               <a
                 key={i}

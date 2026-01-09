@@ -3,18 +3,27 @@
 import { assets } from '../../../public/assets';
 import Image from 'next/image';
 import Link from 'next/link';
-import { usePathname } from 'next/navigation';
+import { usePathname, useSearchParams } from 'next/navigation';
 import { useEffect, useState } from 'react';
 
 const links = [
   { href: '/', label: 'Home' },
   { href: '/#about', label: 'About' },
-  { href: '/#featured-project', label: 'Projects' },
+  { href: '/projects', label: 'Projects' },
   { href: '/#contact', label: 'Contact' },
 ];
 const Navbar = () => {
   const [isOpen, setIsOpen] = useState(false);
+  const [hash, setHash] = useState('');
   const pathname = usePathname();
+  const searchParams = useSearchParams();
+
+  useEffect(() => {
+    if (typeof window !== 'undefined') {
+      setHash(window.location.hash);
+    }
+  }, [pathname, searchParams]);
+
 
   return (
     <header className='fixed top-0 left-0 right-0 z-50 border-b border-border '>
@@ -31,7 +40,8 @@ const Navbar = () => {
           {/* Desktop Links - Merged previous logic with new HSL colors */}
           <ul className='hidden md:flex items-center gap-8'>
             {links.map(({ href, label }) => {
-              const isActive = pathname === href;
+              const isActive =
+                href === `${pathname}${hash}`
               return (
                 <li key={label}>
                   <Link
